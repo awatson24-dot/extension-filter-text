@@ -2,7 +2,7 @@
 import json
 import re
 
-from .datetime import datetime
+from datetime import datetime
 from .network import redirect_static, network_dynamic, just_anti_adblock
 from .cookies import cookies_rules, cookie_static
 from .cosmetics import cosmetic_filter
