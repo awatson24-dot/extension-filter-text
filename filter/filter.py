@@ -104,8 +104,6 @@ def gen_filter():
     dynamic_rules = network_dynamic(lists=filter_lists, patterns=custom_js_patterns, json_dict=valid_jsons,
                                     domains= master_domain, min_prev= 0.005)
 
-    redirect_rules, block_rules = redirect_static(dictionary= url_dict, json_dict= valid_jsons, redirect_domains= master_domain)
-
     # get cookie filters from Fanboy Cookie Monster
     remove_cookies = cookies_rules(url= "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt")
 
