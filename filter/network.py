@@ -1,7 +1,7 @@
 import requests
 import re #pattern
 from urllib.parse import urlparse
-from utils import annotate_modifier, fetch_url, replace_doc_modifier, convert_denyallow_filter_to_exceptions, \
+from .utils import annotate_modifier, fetch_url, replace_doc_modifier, convert_denyallow_filter_to_exceptions, \
     remove_redundant_filters, get_filter, convert_all_document_everything
 
 
