@@ -39,4 +39,11 @@ jobs:
       with:
         name: filter-output
         path: adnante-filter.txt
-        retention-days: 14
+    
+    - name: Commit generated files
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add adnante-filter.txt
+        git commit -m "Add generated file [skip ci]" || echo "No changes to commit"
+        git push
