@@ -1,0 +1,42 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Filter Text Build
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 3 * * *" 
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.x"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Run filter and capture output
+      run: |
+        mkdir -p output
+        # run as a module so relative imports work
+        python -m filter.filter > adnante-filter.txt
+    
+    - name: Upload artifact (output.txt)
+      uses: actions/upload-artifact@v4
+      with:
+        name: filter-output
+        path: adnante-filter.txt
+        retention-days: 14
