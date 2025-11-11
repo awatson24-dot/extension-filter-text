@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: "3.x"
         
@@ -30,7 +30,6 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Run filter and capture output
       run: |
-        mkdir -p output
         # run as a module so relative imports work
         python -m filter.filter > adnante-filter.txt
     
@@ -44,6 +43,8 @@ jobs:
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add adnante-filter.txt
-        git commit -m "Add generated file [skip ci]" || echo "No changes to commit"
+        mkdir -p public
+        cp adnante-filter.txt public/adnante-filter.txt
+        git add public/adnante-filter.txt
+        git commit -m "Update adnante-filter.txt" || echo "No changes to commit"
         git push
