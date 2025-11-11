@@ -85,7 +85,6 @@ def network_dynamic(lists : list, patterns : list, json_dict : dict, domains : s
                 else:
                     misc.add(d_line)
                     contains_all.add(r_line)
-                    check.append(d_line)
 
             elif re.search(r"\$.*\b(popup|subdocument|font|document|media|websocket|object|other|ping|stylesheet)\b", line) :
                 misc.add(line)
