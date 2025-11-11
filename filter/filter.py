@@ -102,7 +102,7 @@ def gen_filter():
     master_domain = set()
 
     dynamic_rules = network_dynamic(lists=filter_lists, patterns=custom_js_patterns, json_dict=valid_jsons,
-                                    domains= master_domain, min_prev= 0.01)
+                                    domains= master_domain, min_prev= 0.05)
 
     # get cookie filters from Fanboy Cookie Monster
     remove_cookies = cookies_rules(url= "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt")
