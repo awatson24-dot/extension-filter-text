@@ -3,17 +3,17 @@ import json
 import re
 
 from datetime import datetime
-from network import redirect_static, network_dynamic, just_anti_adblock
-from cookies import cookies_rules, cookie_static
-from cosmetics import cosmetic_filter
-from utils import further_remove, add_missing_modifier
+from .network import network_dynamic, just_anti_adblock
+from .cookies import cookies_rules, cookie_static
+from .cosmetics import cosmetic_filter
+from .utils import further_remove, add_missing_modifier
 
 url_dict = {
         "phishing" : "https://malware-filter.gitlab.io/malware-filter/phishing-filter-agh.txt",
         "malicious" : "https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-agh.txt"
         }
 
-# collection of different filter lists including AdGuard, Fanboy, uBlockOrigin uAssets and yokoffing's filterlists
+# collection of different filter lists including AdGuard, Fanboy, uBlockOrigin uAssets and Yokoffing's filter lists
 filter_lists = [
     "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_2_Base/filter.txt",
     "https://www.fanboy.co.nz/r/fanboy-ultimate.txt",
@@ -104,8 +104,6 @@ def gen_filter():
     dynamic_rules = network_dynamic(lists=filter_lists, patterns=custom_js_patterns, json_dict=valid_jsons,
                                     domains= master_domain, min_prev= 0.01)
 
-    redirect_rules, block_rules = redirect_static(dictionary= url_dict, json_dict= valid_jsons, redirect_domains= master_domain)
-
     # get cookie filters from Fanboy Cookie Monster
     remove_cookies = cookies_rules(url= "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt")
 
@@ -121,10 +119,10 @@ def gen_filter():
 
     everything = further_remove(list1= dynamic_rules['misc'], list2= master_domain)
 
-    # gets anti block filters
+    # gets anti-block filters
     remove_anti = just_anti_adblock(url= "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt")
 
-    # updates the modifiers for third party cookies
+    # updates the modifiers for third-party cookies
     third_cookies = [add_missing_modifier(f) for f in third_cookies]
 
     with open("adnante-filter.txt", "w", encoding= "utf-8") as f:

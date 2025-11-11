@@ -1,7 +1,7 @@
 import requests
 import re #pattern
 from urllib.parse import urlparse
-from utils import annotate_modifier, fetch_url, replace_doc_modifier, convert_denyallow_filter_to_exceptions, \
+from .utils import annotate_modifier, fetch_url, replace_doc_modifier, convert_denyallow_filter_to_exceptions, \
     remove_redundant_filters, get_filter, convert_all_document_everything
 
 
@@ -195,73 +195,3 @@ def just_anti_adblock(url):
         "block_anti" : sorted(anti_block),
         "third_anti": sorted(third_server)
     }
-
-# Builds static rules based on the malicious url list given
-def redirect_static(dictionary : dict, json_dict : dict, redirect_domains: set) -> tuple :
-    active, static_network, static_block = set(), [], []
-    check = set()
-    # print("Starting redirect job..")
-    #
-    # # Loads online malicious urls
-    # live_data = fetch_url(json_dict.get('urlhaus_db'), json_mode= True)
-    #
-    # # Extract active hostnames from malicious database
-    # active_hosts = {urlparse(entry[0]['url']).hostname for entry in live_data.values() if entry[0]['url_status'] == 'online'}
-    #
-    # # Load malicious domain list from urlhaus-filter
-    # text = requests.get(dictionary.get('malicious')).text
-    #
-    # for line in text.splitlines():
-    #     if line.startswith('!') or not line:
-    #         continue
-    #
-    #     domain = line[2:][:-1]
-    #
-    #     # Cross-references malicious domains with online database
-    #     if domain in active_hosts:
-    #         check.add(domain)
-    #         redirect_domains.add(line)
-
-    print( len(redirect_domains) )
-    for index, domain in enumerate(sorted(redirect_domains)) :
-
-        url_filter, req_domain, mods = get_filter(domain)
-
-        redirect_rule = {
-            "id": index + 1,
-            "priority": 1,
-            "action": {
-                "type": "redirect",
-                "redirect": {
-                    "extensionPath": f"/html/mainframe-redirect.html?blocked={url_filter}"
-                }
-            },
-            "condition": {
-                "urlFilter": url_filter,
-                "resourceTypes": ["main_frame"]
-            }
-        }
-
-        block_rule = {
-            "id": index + 1,
-            "priority": 1,
-            "action": {"type" : "block"},
-            "condition": {
-                "urlFilter": url_filter,
-                "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "font", "object", "xmlhttprequest", "ping", "csp_report", "media",
-                                  "websocket", "webtransport", "webbundle", "other"]
-            }
-        }
-
-        if req_domain:
-            for d in req_domain:
-                redirect_rule['condition'].setdefault('requestDomains', []).append(d)
-
-
-        # Populates list with the hardcoded rule
-        static_network.append(redirect_rule)
-
-        static_block.append(block_rule)
-
-
-    return static_network, static_block

@@ -1,6 +1,6 @@
 import requests
 
-from utils import fetch_url
+from .utils import fetch_url
 
 
 def cosmetic_filter(lists):
