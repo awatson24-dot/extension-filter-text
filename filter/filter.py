@@ -102,7 +102,7 @@ def gen_filter():
     master_domain = set()
 
     dynamic_rules = network_dynamic(lists=filter_lists, patterns=custom_js_patterns, json_dict=valid_jsons,
-                                    domains= master_domain, min_prev= 0.005)
+                                    domains= master_domain, min_prev= 0.01)
 
     redirect_rules, block_rules = redirect_static(dictionary= url_dict, json_dict= valid_jsons, redirect_domains= master_domain)
 
