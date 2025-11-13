@@ -75,16 +75,7 @@ def network_dynamic(lists : list, patterns : list, json_dict : dict, domains : s
                     third_party.add(line)
 
             elif re.search(r"\$.*\ball\b", line):
-                d_line, p_line, r_line = convert_all_document_everything(line)
-
-                match = re.search(r"\|\|([^\^]+)\^", line)
-
-                if match:
-                    domains.add(r_line)
-
-                else:
-                    misc.add(d_line)
-                    contains_all.add(r_line)
+                contains_all.add(line)
 
             elif re.search(r"\$.*\b(popup|subdocument|font|document|media|websocket|object|other|ping|stylesheet)\b", line) :
                 misc.add(line)
