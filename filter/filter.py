@@ -102,7 +102,7 @@ def gen_filter():
     master_domain = set()
 
     dynamic_rules = network_dynamic(lists=filter_lists, patterns=custom_js_patterns, json_dict=valid_jsons,
-                                    domains= master_domain, min_prev= 0.05)
+                                    domains= master_domain, min_prev= 0.005)
 
     # get cookie filters from Fanboy Cookie Monster
     remove_cookies = cookies_rules(url= "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt")
@@ -145,7 +145,7 @@ def gen_filter():
         f.write('\n'.join(dynamic_rules.get('adult_specific')) + '\n')
         f.write('!\n! general_third_party.txt includes xmlhttprequest \n!\n')
         f.write('\n'.join(dynamic_rules.get('3p')) + '\n')
-        f.write('!\n! domain_level.txt, may include document, all modifiers\n!\n')
+        f.write('!\n!potential_trackers.txt contains trackers that are outside\n!\n')
         f.write('\n'.join(sorted( master_domain )) + '\n')
         f.write('!\n! script.txt\n!\n')
         f.write('\n'.join(dynamic_rules.get('scripts')) + '\n')
